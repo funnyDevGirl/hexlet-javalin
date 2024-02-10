@@ -8,8 +8,16 @@ public class HelloWorld {
         var app = Javalin.create(config -> {
             config.plugins.enableDevLogging();
         });
-        // Описываем, что загрузится по адресу /
+        // Описываем, что загрузится по адресу /:
         app.get("/", ctx -> ctx.result("Hello World"));
+        app.get("/users", ctx -> ctx.result("GET /users"));
+        app.post("/users", ctx -> ctx.result("POST /users"));
+        app.get("/hello", ctx -> {
+            //var name = ctx.queryParam("John");
+            var name = ctx.queryParamAsClass("John", String.class).getOrDefault("World");
+            ctx.result("Hello, " + name + "!");
+        });
+
         app.start(7070); // Стартуем веб-сервер
     }
 }
